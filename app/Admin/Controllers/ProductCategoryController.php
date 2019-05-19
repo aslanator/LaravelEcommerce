@@ -2,17 +2,16 @@
 
 namespace App\Admin\Controllers;
 
-use App\Product;
-use App\Http\Controllers\Controller;
 use App\ProductCategory;
+use App\Http\Controllers\Controller;
+use App\Services\AdminControllerAssets;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use App\Services\AdminControllerAssets;
 
-class ProductController extends Controller
+class ProductCategoryController extends Controller
 {
     use HasResourceActions;
 
@@ -90,14 +89,11 @@ class ProductController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Product);
+        $grid = new Grid(new ProductCategory);
 
         $grid->id('Id');
         $grid->title('Title');
-        $grid->description('Description');
-        $grid->color('Color');
-        $grid->size('Size');
-        $grid->price('Price');
+        $grid->parent_id('Parent id');
         $grid->deleted_at('Deleted at');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
@@ -113,14 +109,11 @@ class ProductController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Product::findOrFail($id));
+        $show = new Show(ProductCategory::findOrFail($id));
 
         $show->id('Id');
         $show->title('Title');
-        $show->description('Description');
-        $show->color('Color');
-        $show->size('Size');
-        $show->price('Price');
+        $show->parent_id('Parent id');
         $show->deleted_at('Deleted at');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
@@ -135,24 +128,18 @@ class ProductController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Product);
-
+        $form = new Form(new ProductCategory);
         $form->registerBuiltinFields();
 
+        $categories = [];
+        $categoriesDB = ProductCategory::all()->all();
+
+        foreach($categoriesDB as $item){
+            $categories[$item->id] = $item->title;
+        }
+
         $form->text('title', 'Title');
-        $form->textarea('description', 'Description');
-        $form->text('color', 'Color');
-        $form->text('size', 'Size');
-        $form->text('price', 'Price');
-
-        $form->hasMany('images', 'Images', function (Form\NestedForm $form) {
-            $form->text('title');
-            $form->text('alt');
-            $form->image('url');
-        });
-
-        $form->multipleSelect('categories', 'Categories')->options(ProductCategory::all()->pluck('title', 'id'));
-
+        $form->select('parent_id', 'Parent id')->options($categories);
         return $form;
     }
 }

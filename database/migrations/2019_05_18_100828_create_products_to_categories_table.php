@@ -15,7 +15,7 @@ class CreateProductsToCategoriesTable extends Migration
     {
         Schema::create('products_to_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('section_id');
+            $table->unsignedInteger('category_id');
             $table->unsignedInteger('product_id');
         });
     }
