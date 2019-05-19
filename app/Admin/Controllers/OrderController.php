@@ -134,7 +134,15 @@ class OrderController extends Controller
         $form = new Form(new Order);
         $form->registerBuiltinFields();
 
-        $form->number('user_id', 'User id');
+        $user = [];
+        $userDB = config('admin.database.users_model')::all()->all();
+
+        foreach($userDB as $item){
+            $user[$item->id] = $item->username;
+        }
+
+
+        $form->select('user_id', 'User id')->options($user);
         $form->text('pay_type', 'Pay type');
         $form->text('address', 'Address');
         $form->mobile('phone', 'Phone');
