@@ -17,7 +17,6 @@ class CreateUsersToProductsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('user_id');
-            $table->timestamps();
         });
     }
 

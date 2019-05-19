@@ -17,7 +17,6 @@ class CreateOrdersToProductsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('product_id');
-            $table->timestamps();
         });
     }
 
