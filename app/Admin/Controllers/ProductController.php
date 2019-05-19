@@ -2,8 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\Options;
+use App\Product;
 use App\Http\Controllers\Controller;
+use App\ProductsImages;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -11,7 +12,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class OptionsController extends Controller
+class ProductController extends Controller
 {
     use HasResourceActions;
 
@@ -26,7 +27,7 @@ class OptionsController extends Controller
      * @param Content $content
      * @return Content
      */
-    public function index(Content $content, Admin $admin)
+    public function index(Content $content)
     {
         return $content
             ->header('Index')
@@ -85,11 +86,15 @@ class OptionsController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Options);
+        $grid = new Grid(new Product);
 
         $grid->id('Id');
-        $grid->name('Name');
-        $grid->value('Value');
+        $grid->title('Title');
+        $grid->description('Description');
+        $grid->color('Color');
+        $grid->size('Size');
+        $grid->price('Price');
+        $grid->deleted_at('Deleted at');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -104,11 +109,15 @@ class OptionsController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Options::findOrFail($id));
+        $show = new Show(Product::findOrFail($id));
 
         $show->id('Id');
-        $show->name('Name');
-        $show->value('Value');
+        $show->title('Title');
+        $show->description('Description');
+        $show->color('Color');
+        $show->size('Size');
+        $show->price('Price');
+        $show->deleted_at('Deleted at');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -122,11 +131,21 @@ class OptionsController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Options);
+        $form = new Form(new Product);
 
         $form->registerBuiltinFields();
-        $form->text('name', 'Name');
-        $form->textarea('value', 'Value');
+
+        $form->text('title', 'Title');
+        $form->textarea('description', 'Description');
+        $form->text('color', 'Color');
+        $form->text('size', 'Size');
+        $form->text('price', 'Price');
+
+        $form->hasMany('images', function (Form\NestedForm $form) {
+            $form->text('title');
+            $form->text('alt');
+            $form->image('url');
+        });
 
         return $form;
     }

@@ -22,3 +22,4 @@ Route::get('/login/', ['as' => 'login', 'uses' => 'Auth\LoginController@showLogi
 /* ADMIN */
 
 Route::resource('/admin/options', '\App\Admin\Controllers\OptionsController');
+Route::resource('/admin/products', '\App\Admin\Controllers\ProductController');
