@@ -2,23 +2,17 @@
 
 namespace App\Admin\Controllers;
 
-use App\Product;
+use App\Order;
 use App\Http\Controllers\Controller;
-use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class ProductController extends Controller
+class OrderController extends Controller
 {
     use HasResourceActions;
-
-    public function __construct(Admin $admin)
-    {
-        $admin::js(asset('/js/admin/icheck.js'));
-    }
 
     /**
      * Index interface.
@@ -85,15 +79,15 @@ class ProductController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Product);
+        $grid = new Grid(new Order);
 
         $grid->id('Id');
-        $grid->title('Title');
-        $grid->description('Description');
-        $grid->color('Color');
-        $grid->size('Size');
-        $grid->price('Price');
-        $grid->deleted_at('Deleted at');
+        $grid->user_id('User id');
+        $grid->pay_type('Pay type');
+        $grid->address('Address');
+        $grid->phone('Phone');
+        $grid->email('Email');
+        $grid->notes('Notes');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -108,15 +102,15 @@ class ProductController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Product::findOrFail($id));
+        $show = new Show(Order::findOrFail($id));
 
         $show->id('Id');
-        $show->title('Title');
-        $show->description('Description');
-        $show->color('Color');
-        $show->size('Size');
-        $show->price('Price');
-        $show->deleted_at('Deleted at');
+        $show->user_id('User id');
+        $show->pay_type('Pay type');
+        $show->address('Address');
+        $show->phone('Phone');
+        $show->email('Email');
+        $show->notes('Notes');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -130,21 +124,14 @@ class ProductController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Product);
+        $form = new Form(new Order);
 
-        $form->registerBuiltinFields();
-
-        $form->text('title', 'Title');
-        $form->textarea('description', 'Description');
-        $form->text('color', 'Color');
-        $form->text('size', 'Size');
-        $form->text('price', 'Price');
-
-        $form->hasMany('images', function (Form\NestedForm $form) {
-            $form->text('title');
-            $form->text('alt');
-            $form->image('url');
-        });
+        $form->number('user_id', 'User id');
+        $form->text('pay_type', 'Pay type');
+        $form->text('address', 'Address');
+        $form->mobile('phone', 'Phone');
+        $form->email('email', 'Email');
+        $form->textarea('notes', 'Notes');
 
         return $form;
     }

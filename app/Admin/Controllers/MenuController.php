@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Product;
+use App\Menu;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -11,7 +11,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class ProductController extends Controller
+class MenuController extends Controller
 {
     use HasResourceActions;
 
@@ -85,15 +85,12 @@ class ProductController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Product);
+        $grid = new Grid(new Menu);
 
         $grid->id('Id');
         $grid->title('Title');
-        $grid->description('Description');
-        $grid->color('Color');
-        $grid->size('Size');
-        $grid->price('Price');
-        $grid->deleted_at('Deleted at');
+        $grid->url('Url');
+        $grid->parent_id('Parent id');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -108,15 +105,12 @@ class ProductController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Product::findOrFail($id));
+        $show = new Show(Menu::findOrFail($id));
 
         $show->id('Id');
         $show->title('Title');
-        $show->description('Description');
-        $show->color('Color');
-        $show->size('Size');
-        $show->price('Price');
-        $show->deleted_at('Deleted at');
+        $show->url('Url');
+        $show->parent_id('Parent id');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -130,22 +124,20 @@ class ProductController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Product);
-
+        $form = new Form(new Menu);
         $form->registerBuiltinFields();
 
+        $menu = [];
+        $menuDB = Menu::all()->all();
+
+        foreach($menuDB as $item){
+            $menu[$item->id] = $item->title;
+        }
+
+
         $form->text('title', 'Title');
-        $form->textarea('description', 'Description');
-        $form->text('color', 'Color');
-        $form->text('size', 'Size');
-        $form->text('price', 'Price');
-
-        $form->hasMany('images', function (Form\NestedForm $form) {
-            $form->text('title');
-            $form->text('alt');
-            $form->image('url');
-        });
-
+        $form->text('url', 'Url');
+        $form->select('parent_id', 'Parent id')->options($menu);
         return $form;
     }
 }
