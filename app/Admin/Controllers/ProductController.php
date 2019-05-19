@@ -140,6 +140,7 @@ class ProductController extends Controller
         $form->registerBuiltinFields();
 
         $form->text('title', 'Title');
+        $form->text('slug', 'slug');
         $form->textarea('description', 'Description');
         $form->text('color', 'Color');
         $form->text('size', 'Size');

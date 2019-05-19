@@ -132,7 +132,7 @@ class MenuController extends Controller
 
 
         $form->text('title', 'Title');
-        $form->text('url', 'Url');
+        $form->text('slug', 'Slug');
         $form->select('parent_id', 'Parent id')->options($menu);
         return $form;
     }
