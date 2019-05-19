@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Order;
 use App\Http\Controllers\Controller;
+use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -13,6 +14,12 @@ use Encore\Admin\Show;
 class OrderController extends Controller
 {
     use HasResourceActions;
+
+
+    public function __construct(Admin $admin)
+    {
+        $admin::js(asset('/js/admin/icheck.js'));
+    }
 
     /**
      * Index interface.
@@ -125,6 +132,7 @@ class OrderController extends Controller
     protected function form()
     {
         $form = new Form(new Order);
+        $form->registerBuiltinFields();
 
         $form->number('user_id', 'User id');
         $form->text('pay_type', 'Pay type');
@@ -132,6 +140,8 @@ class OrderController extends Controller
         $form->mobile('phone', 'Phone');
         $form->email('email', 'Email');
         $form->textarea('notes', 'Notes');
+        $form->checkbox('payed', 'Payed');
+        $form->checkbox('complete', 'Complete');
 
         return $form;
     }
