@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Options;
 use App\Http\Controllers\Controller;
+use App\Services\AdminControllerAssets;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -15,9 +16,13 @@ class OptionsController extends Controller
 {
     use HasResourceActions;
 
-    public function __construct(Admin $admin)
+    /**
+     * Добавляет css и js файлы
+     * @param AdminControllerAssets $assets
+     */
+    public function __construct(AdminControllerAssets $assets)
     {
-        $admin::js(asset('/js/admin/icheck.js'));
+        $assets->addAssets();
     }
 
     /**

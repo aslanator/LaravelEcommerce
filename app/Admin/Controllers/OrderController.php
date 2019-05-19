@@ -4,6 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Order;
 use App\Http\Controllers\Controller;
+use App\Product;
+use App\Services\AdminControllerAssets;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -15,11 +17,13 @@ class OrderController extends Controller
 {
     use HasResourceActions;
 
-
-    public function __construct(Admin $admin)
+    /**
+     * Добавляет css и js файлы
+     * @param AdminControllerAssets $assets
+     */
+    public function __construct(AdminControllerAssets $assets)
     {
-        $admin::js(asset('/js/admin/icheck.js'));
-        $admin::js(asset('/js/admin/select2.js'));
+        $assets->addAssets();
     }
 
     /**
@@ -146,11 +150,13 @@ class OrderController extends Controller
         $form->select('user_id', 'User id')->options($user);
         $form->text('pay_type', 'Pay type');
         $form->text('address', 'Address');
-        $form->mobile('phone', 'Phone');
+        $form->text('phone', 'Phone');
         $form->email('email', 'Email');
         $form->textarea('notes', 'Notes');
-        $form->checkbox('payed', 'Payed');
-        $form->checkbox('complete', 'Complete');
+        $form->select('payed', 'Payed')->options(['0' => 'N', '1' => 'Y']);
+        $form->select('complete', 'Complete')->options(['0' => 'N', '1' => 'Y']);
+
+        $form->multipleSelect('products')->options(Product::all()->pluck('title', 'id'));
 
         return $form;
     }

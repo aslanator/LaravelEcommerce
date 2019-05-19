@@ -14,8 +14,8 @@ class AddCompleteAndPayedFieldsToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->boolean('payed');
-            $table->boolean('complete');
+            $table->boolean('payed')->nullable();
+            $table->boolean('complete')->nullable();
         });
     }
 
@@ -27,8 +27,8 @@ class AddCompleteAndPayedFieldsToOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('payed');
-            $table->dropColumn('complete');
+            $table->dropColumn('payed')->nullable();
+            $table->dropColumn('complete')->nullable();
         });
     }
 }

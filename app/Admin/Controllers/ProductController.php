@@ -4,20 +4,24 @@ namespace App\Admin\Controllers;
 
 use App\Product;
 use App\Http\Controllers\Controller;
-use Encore\Admin\Admin;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use App\Services\AdminControllerAssets;
 
 class ProductController extends Controller
 {
     use HasResourceActions;
 
-    public function __construct(Admin $admin)
+    /**
+     * Добавляет css и js файлы
+     * @param AdminControllerAssets $assets
+     */
+    public function __construct(AdminControllerAssets $assets)
     {
-        $admin::js(asset('/js/admin/icheck.js'));
+        $assets->addAssets();
     }
 
     /**

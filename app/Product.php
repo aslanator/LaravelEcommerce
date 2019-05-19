@@ -12,4 +12,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductsImages::class, 'product_id');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'orders_to_products');
+    }
 }
