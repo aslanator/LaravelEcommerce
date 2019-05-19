@@ -19,6 +19,7 @@ class OrderController extends Controller
     public function __construct(Admin $admin)
     {
         $admin::js(asset('/js/admin/icheck.js'));
+        $admin::js(asset('/js/admin/select2.js'));
     }
 
     /**
